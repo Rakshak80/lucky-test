@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">Lucky Satta - Satta King Results</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c41e3a;
+            --secondary: #ffd700;
+            --dark: #1a1a1a;
+            --light: #f5f5f5;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #333;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Header */
+        header {
+            background: linear-gradient(90deg, var(--primary) 0%, #8b1428 100%);
+            color: white;
+            padding: 1rem 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: 2px;
+            cursor: pointer;
+            animation: glow 2s ease-in-out infinite;
+        }
+
+        @keyframes glow {
+            0%, 100% { text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+            50% { text-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        }
+
+        nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: var(--secondary);
+        }
+
+        .admin-link {
+            background: linear-gradient(90deg, rgba(255,215,0,0.3), transparent);
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            border: 2px solid var(--secondary);
+            transition: all 0.3s ease;
+        }
+
+        .admin-link:hover {
+            background: linear-gradient(90deg, rgba(255,215,0,0.5), transparent);
+            transform: scale(1.05);
+        }
+
+        /* Hero */
+        .hero {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.95) 0%, rgba(139, 20, 40, 0.95) 100%);
+            color: white;
+            padding: 4rem 1rem;
+            text-align: center;
+            animation: slideDown 0.8s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background: var(--secondary);
+            color: var(--dark);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            margin: 0.5rem;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 215, 0, 0.5);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+
+        .section {
+            padding: 3rem 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: white;
+            margin-bottom: 2rem;
+            text-align: center;
+            animation: fadeIn 0.6s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Results */
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            border-left: 4px solid var(--primary);
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 8px 30px rgba(196, 30, 58, 0.3);
+        }
+
+        .game-name {
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+
+        .game-time {
+            color: #999;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        .result-number {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .result-card:hover .result-number {
+            transform: scale(1.1);
+            color: #ff6b35;
+        }
+
+        /* Chart */
+        .chart-wrapper {
+            background: white;
+            border-radius: 10px;
+            padding: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            overflow-x: auto;
+            margin-bottom: 2rem;
+        }
+
+        .chart-wrapper table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.85rem;
+        }
+
+        .chart-wrapper th {
+            background: linear-gradient(90deg, var(--primary) 0%, #8b1428 100%);
+            color: white;
+            padding: 0.8rem;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .chart-wrapper td {
+            padding: 0.7rem;
+            border: 1px solid #ddd;
+            text-align: center;
+        }
+
+        .chart-wrapper tr:hover {
+            background: #f9f9f9;
+        }
+
+        .game-label {
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+            padding-left: 1rem;
+        }
+
+        /* Khaiwal */
+        .khaiwal-card {
+            background: white;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+            border-radius: 10px;
+            border-left: 5px solid var(--primary);
+            transition: all 0.3s ease;
+        }
+
+        .khaiwal-card:hover {
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.2);
+            transform: translateX(5px);
+        }
+
+        .khaiwal-name {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--primary);
+            margin-bottom: 1rem;
+        }
+
+        .khaiwal-games {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .khaiwal-btn {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s ease;
+        }
+
+        .khaiwal-btn:hover {
+            background: #8b1428;
+            transform: scale(1.05);
+        }
+
+        /* Contact */
+        .contact-section {
+            background: linear-gradient(135deg, rgba(196, 30, 58, 0.95), rgba(139, 20, 40, 0.95));
+            padding: 3rem 1rem;
+            border-radius: 15px;
+            margin: 3rem 0;
+            text-align: center;
+            color: white;
+        }
+
+        .contact-section h2 {
+            margin-bottom: 1.5rem;
+            font-size: 1.8rem;
+        }
+
+        .contact-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .contact-btn {
+            padding: 1rem;
+            background: white;
+            color: var(--primary);
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 700;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+
+        .contact-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        /* Footer */
+        footer {
+            background: var(--dark);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+            margin-top: 3rem;
+        }
+
+        footer p {
+            margin: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .logo {
+                font-size: 1.3rem;
+            }
+            nav {
+                gap: 1rem;
+                font-size: 0.9rem;
+            }
+            .results-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo" onclick="location.href='#home'">💰 Lucky Satta</div>
+            <nav>
+                <a onclick="scrollToSection('home')">Home</a>
+                <a onclick="scrollToSection('results')">Results</a>
+                <a onclick="scrollToSection('chart')">Chart</a>
+                <a onclick="scrollToSection('khaiwal')">Khaiwal</a>
+                <a onclick="scrollToSection('contact')">Contact</a>
+                <a href="admin-panel.html" target="_blank" class="admin-link">⚙️ Admin</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="home">
+        <div class="container">
+            <h1 id="heroTitle">Lucky Satta King Results</h1>
+            <p id="heroSubtitle">Daily Superfast Results - Gali, Desawar, Delhi & More</p>
+            <a href="javascript:void(0)" id="whatsappBtn" target="_blank" class="btn">📱 Join WhatsApp</a>
+            <a href="javascript:void(0)" id="telegramBtn" target="_blank" class="btn">✈️ Join Telegram</a>
+        </div>
+    </section>
+
+    <!-- Results -->
+    <section class="section" id="results">
+        <div class="container">
+            <h2 class="section-title">📊 <span id="resultDateDisplay">Today's Results</span></h2>
+            <div class="results-grid" id="resultsContainer"></div>
+        </div>
+    </section>
+
+    <!-- Chart -->
+    <section class="section" id="chart">
+        <div class="container">
+            <h2 class="section-title">📈 Complete March 2026 Results Chart</h2>
+            <div class="chart-wrapper">
+                <table id="chartTable"></table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Khaiwal -->
+    <section class="section" id="khaiwal">
+        <div class="container">
+            <h2 class="section-title">👑 Authorized Khaiwal (Dealers)</h2>
+            <div id="khaiwalContainer"></div>
+        </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact-section" id="contact">
+        <div class="container">
+            <h2>📞 Get Results Faster!</h2>
+            <p>Join our WhatsApp and Telegram channels for instant updates</p>
+            <div class="contact-buttons">
+                <a href="javascript:void(0)" id="contactWhatsapp" target="_blank" class="contact-btn">📱 WhatsApp Channel</a>
+                <a href="javascript:void(0)" id="contactTelegram" target="_blank" class="contact-btn">✈️ Telegram Channel</a>
+                <a href="javascript:void(0)" id="contactAdmin" target="_blank" class="contact-btn">👤 Contact Admin</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>⚖️ Legal Disclaimer:</strong> <span id="disclaimerText">Satta is not legal in India.</span></p>
+        <p>© 2026 Lucky Satta - All Rights Reserved</p>
+    </footer>
+
+    <script>
+        // Load data from admin panel
+        function loadData() {
+            loadBranding();
+            loadResults();
+            loadGameTimes();
+            loadKhaiwal();
+            loadContact();
+        }
+
+        function loadBranding() {
+            const data = JSON.parse(localStorage.getItem('luckySattaBranding') || '{}');
+            document.querySelector('.logo').textContent = data.logoText || '💰 Lucky Satta';
+            document.getElementById('heroTitle').textContent = data.heroTitle || 'Lucky Satta King Results';
+            document.getElementById('heroSubtitle').textContent = data.heroSubtitle || 'Daily Superfast Results...';
+            document.getElementById('pageTitle').textContent = (data.heroTitle || 'Lucky Satta') + ' - Satta King Results';
+        }
+
+        function loadResults() {
+            const data = JSON.parse(localStorage.getItem('luckySattaResults') || '{}');
+            const gameTimes = JSON.parse(localStorage.getItem('luckySattaGameTimes') || '[]');
+            
+            document.getElementById('resultDateDisplay').textContent = `Today's Results - ${data.date || '11 March 2026'}`;
+            
+            const games = [
+                { key: 'disawar', label: '🏛️ Disawar', name: 'Disawar' },
+                { key: 'sadarbazar', label: '🛍️ Sadar Bazar', name: 'Sadar Bazar' },
+                { key: 'gwalior', label: '🏯 Gwalior', name: 'Gwalior' },
+                { key: 'delhibazar', label: '🕌 Delhi Bazar', name: 'Delhi Bazar' },
+                { key: 'delhimatka', label: '🪔 Delhi Matka', name: 'Delhi Matka' },
+                { key: 'shriganesh', label: '🙏 Shri Ganesh', name: 'Shri Ganesh' },
+                { key: 'agra', label: '🏰 Agra', name: 'Agra' },
+                { key: 'faridabad', label: '🌆 Faridabad', name: 'Faridabad' }
+            ];
+
+            const html = games.map(g => {
+                const time = gameTimes.find(t => t.name === g.name)?.time || '--';
+                return `
+                    <div class="result-card">
+                        <div class="game-name">${g.label}</div>
+                        <div class="game-time">${time}</div>
+                        <div class="result-number">${data[g.key] || '--'}</div>
+                    </div>
+                `;
+            }).join('');
+
+            document.getElementById('resultsContainer').innerHTML = html;
+        }
+
+        function loadGameTimes() {
+            const data = JSON.parse(localStorage.getItem('luckySattaGameTimes') || '[]');
+            const results = JSON.parse(localStorage.getItem('luckySattaResults') || '{}');
+            
+            if (data.length === 0) return;
+
+            let html = '<thead><tr><th>Game</th>';
+            for (let i = 1; i <= 31; i++) html += `<th>${i}</th>`;
+            html += '</tr></thead><tbody>';
+
+            data.forEach(game => {
+                html += `<tr><td class="game-label">${game.name}</td>`;
+                for (let i = 1; i <= 31; i++) {
+                    html += `<td>--</td>`;
+                }
+                html += '</tr>';
+            });
+
+            html += '</tbody>';
+            document.getElementById('chartTable').innerHTML = html;
+        }
+
+        function loadKhaiwal() {
+            const data = JSON.parse(localStorage.getItem('luckySattaKhaiwal') || '[]');
+            
+            if (data.length === 0) {
+                data.push(
+                    { name: 'Ajay Bhai', link: 'https://wa.me/+917419051449', games: 'Sadar Bazar - Gali' },
+                    { name: 'Sunil Bhai', link: 'https://wa.me/+919817050720', games: 'Sadar Bazar - Alwar' },
+                    { name: 'Sameer Bhai', link: 'https://wa.me/+919812073480', games: 'Sadar Bazar - Gali' }
+                );
+            }
+
+            const html = data.map(k => `
+                <div class="khaiwal-card">
+                    <div class="khaiwal-name">👑 ${k.name}</div>
+                    <div class="khaiwal-games"><strong>Games:</strong> ${k.games}</div>
+                    <button class="khaiwal-btn" onclick="window.open('${k.link}', '_blank')">📲 Contact on WhatsApp</button>
+                </div>
+            `).join('');
+
+            document.getElementById('khaiwalContainer').innerHTML = html;
+        }
+
+        function loadContact() {
+            const data = JSON.parse(localStorage.getItem('luckySattaContact') || '{}');
+            
+            const whatsapp = data.whatsapp || 'https://whatsapp.com/channel/0029VafVyGV1SWsynynlOO0W';
+            const telegram = data.telegram || 'https://t.me/a7Resultupdates';
+            const admin = data.admin || 'https://wa.me/+917206591251';
+            
+            document.getElementById('whatsappBtn').href = whatsapp;
+            document.getElementById('telegramBtn').href = telegram;
+            document.getElementById('contactWhatsapp').href = whatsapp;
+            document.getElementById('contactTelegram').href = telegram;
+            document.getElementById('contactAdmin').href = admin;
+            
+            document.getElementById('disclaimerText').textContent = data.disclaimer || 'Satta is not legal in India.';
+        }
+
+        function scrollToSection(sectionId) {
+            const element = document.getElementById(sectionId);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        }
+
+        // Load on page load
+        document.addEventListener('DOMContentLoaded', loadData);
+
+        // Reload when storage changes (from admin panel)
+        window.addEventListener('storage', loadData);
+    </script>
+</body>
+</html>

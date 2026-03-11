@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucky Satta - Admin Panel</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #c41e3a;
+            --secondary: #ffd700;
+            --dark: #1a1a1a;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #333;
+            min-height: 100vh;
+        }
+
+        .login-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 1rem;
+        }
+
+        .login-box {
+            background: white;
+            padding: 3rem;
+            border-radius: 15px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            width: 100%;
+            max-width: 400px;
+        }
+
+        .login-box h1 {
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.9rem;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 1rem;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(196, 30, 58, 0.1);
+        }
+
+        .login-btn {
+            width: 100%;
+            padding: 1rem;
+            background: linear-gradient(90deg, var(--primary), #8b1428);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(196, 30, 58, 0.3);
+        }
+
+        .error-msg {
+            color: #cc0000;
+            text-align: center;
+            margin-bottom: 1rem;
+            padding: 0.8rem;
+            background: #ffe6e6;
+            border-radius: 6px;
+            display: none;
+        }
+
+        .access-tab {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            background: white;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .access-tab.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .access-tab:hover {
+            border-color: var(--primary);
+        }
+
+        .admin-container {
+            display: none;
+            min-height: 100vh;
+            padding: 2rem;
+        }
+
+        .admin-container.active {
+            display: block;
+        }
+
+        .admin-header {
+            background: linear-gradient(90deg, var(--primary), #8b1428);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logout-btn {
+            padding: 0.8rem 1.5rem;
+            background: white;
+            color: var(--primary);
+            border: none;
+            border-radius: 20px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .tab-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 0.8rem;
+            margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            padding: 0.8rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+
+        .tab-content {
+            display: none;
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .edit-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .edit-field {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .edit-field label {
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+        }
+
+        .edit-field input,
+        .edit-field textarea {
+            padding: 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 6px;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        .edit-field input:focus,
+        .edit-field textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+        }
+
+        .button-group {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .save-btn, .reset-btn {
+            padding: 0.9rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .save-btn {
+            background: #27ae60;
+            color: white;
+        }
+
+        .reset-btn {
+            background: #f39c12;
+            color: white;
+        }
+
+        .table-section {
+            overflow-x: auto;
+            margin-top: 2rem;
+        }
+
+        .table-section table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.9rem;
+        }
+
+        .table-section th {
+            background: var(--primary);
+            color: white;
+            padding: 0.8rem;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .table-section td {
+            padding: 0.8rem;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .inline-edit {
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 100%;
+            font-family: inherit;
+        }
+
+        .success-msg {
+            background: #d4edda;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            display: none;
+        }
+
+        @media (max-width: 768px) {
+            .edit-grid {
+                grid-template-columns: 1fr;
+            }
+            .tab-buttons {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Access Methods -->
+    <div class="login-container" id="accessContainer">
+        <div class="login-box">
+            <h1>🔐 Admin Panel Access</h1>
+            <div class="error-msg" id="errorMsg"></div>
+            
+            <!-- Tab Buttons -->
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem; margin-bottom: 2rem;">
+                <button onclick="switchAccessTab('email')" class="access-tab active" id="emailTab">📧 Email</button>
+                <button onclick="switchAccessTab('code')" class="access-tab" id="codeTab">🔑 Code</button>
+            </div>
+
+            <!-- Email Login -->
+            <form onsubmit="handleLogin(event)" id="emailForm">
+                <div class="form-group">
+                    <label>📧 Email</label>
+                    <input type="email" id="emailInput" placeholder="admin@luckysatta.com" required>
+                </div>
+                <div class="form-group">
+                    <label>🔒 Password</label>
+                    <input type="password" id="passwordInput" placeholder="admin123" required>
+                </div>
+                <button type="submit" class="login-btn">Login with Email</button>
+            </form>
+
+            <!-- Access Code Login -->
+            <form onsubmit="handleCodeLogin(event)" id="codeForm" style="display: none;">
+                <div class="form-group">
+                    <label>🔑 4-Digit Access Code</label>
+                    <input type="text" id="accessCode" placeholder="0000" maxlength="4" required pattern="[0-9]{4}">
+                    <small style="color: #666; margin-top: 0.5rem; display: block;">Enter the 4-digit code</small>
+                </div>
+                <button type="submit" class="login-btn">Access Admin Panel</button>
+            </form>
+
+            <hr style="margin: 1.5rem 0; border: none; border-top: 1px solid #ddd;">
+            
+            <div style="text-align: center; font-size: 0.85rem;">
+                <p><strong>📧 Email:</strong> admin@luckysatta.com</p>
+                <p><strong>🔑 Password:</strong> admin123</p>
+                <p><strong>📱 Access Code:</strong> 1234</p>
+                <p style="color: #999; margin-top: 1rem;">Choose any method above</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard -->
+    <div class="admin-container" id="adminContainer">
+        <div class="admin-header">
+            <h1>⚙️ Lucky Satta Admin</h1>
+            <button class="logout-btn" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div style="max-width: 1400px; margin: 0 auto;">
+            <div class="success-msg" id="successMsg"></div>
+
+            <div class="tab-buttons">
+                <button class="tab-btn active" onclick="switchTab('branding')">📱 Logo</button>
+                <button class="tab-btn" onclick="switchTab('results')">📊 Results</button>
+                <button class="tab-btn" onclick="switchTab('games')">🎯 Games</button>
+                <button class="tab-btn" onclick="switchTab('khaiwal')">👑 Khaiwal</button>
+                <button class="tab-btn" onclick="switchTab('contact')">📞 Contact</button>
+            </div>
+
+            <!-- Tab 1: Logo -->
+            <div class="tab-content active" id="branding">
+                <h2>📱 Logo & Website Title</h2>
+                <div class="edit-grid">
+                    <div class="edit-field">
+                        <label>💰 Logo Text</label>
+                        <input type="text" id="logoText" placeholder="💰 Lucky Satta">
+                    </div>
+                    <div class="edit-field">
+                        <label>🎯 Main Title</label>
+                        <input type="text" id="heroTitle" placeholder="Lucky Satta King Results">
+                    </div>
+                    <div class="edit-field">
+                        <label>📝 Subtitle</label>
+                        <textarea id="heroSubtitle" placeholder="Daily Superfast Results..."></textarea>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveBranding()">💾 Save</button>
+                    <button class="reset-btn" onclick="loadBranding()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Tab 2: Results -->
+            <div class="tab-content" id="results">
+                <h2>📊 Today's Results</h2>
+                <div class="edit-grid">
+                    <div class="edit-field">
+                        <label>📅 Date</label>
+                        <input type="text" id="resultDate" placeholder="11 March 2026">
+                    </div>
+                </div>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Game</th>
+                                <th>Number</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsTable"></tbody>
+                    </table>
+                </div>
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveResults()">💾 Save</button>
+                    <button class="reset-btn" onclick="loadResults()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Tab 3: Games -->
+            <div class="tab-content" id="games">
+                <h2>🎯 Game Times</h2>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Game Name</th>
+                                <th>Time</th>
+                            </tr>
+                        </thead>
+                        <tbody id="gamesTable"></tbody>
+                    </table>
+                </div>
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveGameTimes()">💾 Save</button>
+                    <button class="reset-btn" onclick="loadGameTimes()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Tab 4: Khaiwal -->
+            <div class="tab-content" id="khaiwal">
+                <h2>👑 Authorized Khaiwal</h2>
+                <div class="table-section">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>WhatsApp Link</th>
+                                <th>Games</th>
+                            </tr>
+                        </thead>
+                        <tbody id="khaiwalTable"></tbody>
+                    </table>
+                </div>
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveKhaiwal()">💾 Save</button>
+                    <button class="reset-btn" onclick="loadKhaiwal()">Reset</button>
+                </div>
+            </div>
+
+            <!-- Tab 5: Contact -->
+            <div class="tab-content" id="contact">
+                <h2>📞 Contact Links</h2>
+                <div class="edit-grid">
+                    <div class="edit-field">
+                        <label>💬 WhatsApp Link</label>
+                        <input type="text" id="contact_whatsapp" placeholder="https://whatsapp.com/channel/...">
+                    </div>
+                    <div class="edit-field">
+                        <label>✈️ Telegram Link</label>
+                        <input type="text" id="contact_telegram" placeholder="https://t.me/...">
+                    </div>
+                    <div class="edit-field">
+                        <label>👤 Admin WhatsApp</label>
+                        <input type="text" id="contact_admin" placeholder="https://wa.me/+91...">
+                    </div>
+                    <div class="edit-field" style="grid-column: 1 / -1;">
+                        <label>⚖️ Disclaimer</label>
+                        <textarea id="contact_disclaimer"></textarea>
+                    </div>
+                </div>
+                <div class="button-group">
+                    <button class="save-btn" onclick="saveContact()">💾 Save</button>
+                    <button class="reset-btn" onclick="loadContact()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const CREDENTIALS = [
+            { email: 'admin@luckysatta.com', password: 'admin123' }
+        ];
+
+        const GAMES = [
+            { name: 'Disawar', time: '5:10 AM' },
+            { name: 'Sadar Bazar', time: '1:40 PM' },
+            { name: 'Gwalior', time: '2:40 PM' },
+            { name: 'Delhi Bazar', time: '3:10 PM' },
+            { name: 'Delhi Matka', time: '3:40 PM' },
+            { name: 'Shri Ganesh', time: '4:40 PM' },
+            { name: 'Agra', time: '5:30 PM' },
+            { name: 'Faridabad', time: '6:10 PM' },
+            { name: 'Alwar', time: '7:30 PM' },
+            { name: 'Gaziyabad', time: '9:30 PM' },
+            { name: 'Dwarka', time: '10:35 PM' },
+            { name: 'Gali', time: '11:30 PM' }
+        ];
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', function() {
+            checkAuth();
+            loadBranding();
+            loadResults();
+            loadGameTimes();
+            loadKhaiwal();
+            loadContact();
+        });
+
+        function checkAuth() {
+            const logged = localStorage.getItem('adminLoggedIn');
+            if (logged) {
+                document.getElementById('accessContainer').style.display = 'none';
+                document.getElementById('adminContainer').classList.add('active');
+            }
+        }
+
+        // Access Tab Switching
+        function switchAccessTab(tab) {
+            document.querySelectorAll('.access-tab').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab + 'Tab').classList.add('active');
+            document.getElementById('emailForm').style.display = tab === 'email' ? 'block' : 'none';
+            document.getElementById('codeForm').style.display = tab === 'code' ? 'block' : 'none';
+        }
+
+        // Email Login
+        function handleLogin(event) {
+            event.preventDefault();
+            const email = document.getElementById('emailInput').value;
+            const password = document.getElementById('passwordInput').value;
+
+            const valid = CREDENTIALS.some(c => c.email === email && c.password === password);
+
+            if (valid) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                checkAuth();
+                document.getElementById('errorMsg').style.display = 'none';
+            } else {
+                document.getElementById('errorMsg').textContent = '❌ Invalid email or password';
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        // Access Code Login
+        function handleCodeLogin(event) {
+            event.preventDefault();
+            const code = document.getElementById('accessCode').value;
+            const validCodes = ['1234', '0000', '9999']; // Multiple access codes
+
+            if (validCodes.includes(code)) {
+                localStorage.setItem('adminLoggedIn', 'true');
+                checkAuth();
+                document.getElementById('errorMsg').style.display = 'none';
+            } else {
+                document.getElementById('errorMsg').textContent = '❌ Invalid access code';
+                document.getElementById('errorMsg').style.display = 'block';
+            }
+        }
+
+        function handleLogout() {
+            localStorage.removeItem('adminLoggedIn');
+            document.getElementById('accessContainer').style.display = 'flex';
+            document.getElementById('adminContainer').classList.remove('active');
+            document.getElementById('emailInput').value = '';
+            document.getElementById('passwordInput').value = '';
+            document.getElementById('accessCode').value = '';
+            document.getElementById('errorMsg').style.display = 'none';
+            switchAccessTab('email');
+        }
+
+        function switchTab(tab) {
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.getElementById(tab).classList.add('active');
+            event.target.classList.add('active');
+        }
+
+        function showSuccess(msg) {
+            const el = document.getElementById('successMsg');
+            el.textContent = msg;
+            el.style.display = 'block';
+            setTimeout(() => el.style.display = 'none', 3000);
+        }
+
+        // Branding
+        function loadBranding() {
+            const data = JSON.parse(localStorage.getItem('luckySattaBranding') || '{}');
+            document.getElementById('logoText').value = data.logoText || '💰 Lucky Satta';
+            document.getElementById('heroTitle').value = data.heroTitle || 'Lucky Satta King Results';
+            document.getElementById('heroSubtitle').value = data.heroSubtitle || 'Daily Superfast Results - Gali, Desawar, Delhi & More';
+        }
+
+        function saveBranding() {
+            const data = {
+                logoText: document.getElementById('logoText').value,
+                heroTitle: document.getElementById('heroTitle').value,
+                heroSubtitle: document.getElementById('heroSubtitle').value
+            };
+            localStorage.setItem('luckySattaBranding', JSON.stringify(data));
+            showSuccess('✅ Logo saved!');
+        }
+
+        // Results
+        function loadResults() {
+            const data = JSON.parse(localStorage.getItem('luckySattaResults') || '{}');
+            document.getElementById('resultDate').value = data.date || '11 March 2026';
+            
+            const tbody = document.getElementById('resultsTable');
+            tbody.innerHTML = GAMES.map(g => `
+                <tr>
+                    <td>${g.name}</td>
+                    <td><input type="text" class="inline-edit" data-game="${g.name}" value="${data[g.name.toLowerCase().replace(/\s+/g, '')] || '--'}"></td>
+                </tr>
+            `).join('');
+        }
+
+        function saveResults() {
+            const data = { date: document.getElementById('resultDate').value };
+            document.querySelectorAll('#resultsTable input').forEach(input => {
+                data[input.dataset.game.toLowerCase().replace(/\s+/g, '')] = input.value;
+            });
+            localStorage.setItem('luckySattaResults', JSON.stringify(data));
+            showSuccess('✅ Results saved!');
+        }
+
+        // Games
+        function loadGameTimes() {
+            const data = JSON.parse(localStorage.getItem('luckySattaGameTimes') || JSON.stringify(GAMES));
+            const tbody = document.getElementById('gamesTable');
+            tbody.innerHTML = data.map(g => `
+                <tr>
+                    <td>${g.name}</td>
+                    <td><input type="text" class="inline-edit" data-name="${g.name}" value="${g.time}"></td>
+                </tr>
+            `).join('');
+        }
+
+        function saveGameTimes() {
+            const data = [];
+            document.querySelectorAll('#gamesTable tr').forEach(row => {
+                const cells = row.querySelectorAll('td');
+                data.push({
+                    name: cells[0].textContent,
+                    time: cells[1].querySelector('input').value
+                });
+            });
+            localStorage.setItem('luckySattaGameTimes', JSON.stringify(data));
+            showSuccess('✅ Games saved!');
+        }
+
+        // Khaiwal
+        function loadKhaiwal() {
+            let data = JSON.parse(localStorage.getItem('luckySattaKhaiwal') || '[]');
+            if (data.length === 0) {
+                data = [
+                    { name: 'Ajay Bhai', link: 'https://wa.me/+917419051449', games: 'All Games' },
+                    { name: 'Sunil Bhai', link: 'https://wa.me/+919817050720', games: 'All Games' },
+                    { name: 'Sameer Bhai', link: 'https://wa.me/+919812073480', games: 'All Games' }
+                ];
+            }
+            const tbody = document.getElementById('khaiwalTable');
+            tbody.innerHTML = data.map(k => `
+                <tr>
+                    <td><input type="text" class="inline-edit" data-field="name" value="${k.name}"></td>
+                    <td><input type="text" class="inline-edit" data-field="link" value="${k.link}"></td>
+                    <td><input type="text" class="inline-edit" data-field="games" value="${k.games}"></td>
+                </tr>
+            `).join('');
+        }
+
+        function saveKhaiwal() {
+            const data = [];
+            document.querySelectorAll('#khaiwalTable tr').forEach(row => {
+                const inputs = row.querySelectorAll('input');
+                data.push({
+                    name: inputs[0].value,
+                    link: inputs[1].value,
+                    games: inputs[2].value
+                });
+            });
+            localStorage.setItem('luckySattaKhaiwal', JSON.stringify(data));
+            showSuccess('✅ Khaiwal saved!');
+        }
+
+        // Contact
+        function loadContact() {
+            const data = JSON.parse(localStorage.getItem('luckySattaContact') || '{}');
+            document.getElementById('contact_whatsapp').value = data.whatsapp || 'https://whatsapp.com/channel/0029VafVyGV1SWsynynlOO0W';
+            document.getElementById('contact_telegram').value = data.telegram || 'https://t.me/a7Resultupdates';
+            document.getElementById('contact_admin').value = data.admin || 'https://wa.me/+917206591251';
+            document.getElementById('contact_disclaimer').value = data.disclaimer || 'Satta is not legal in India.';
+        }
+
+        function saveContact() {
+            const data = {
+                whatsapp: document.getElementById('contact_whatsapp').value,
+                telegram: document.getElementById('contact_telegram').value,
+                admin: document.getElementById('contact_admin').value,
+                disclaimer: document.getElementById('contact_disclaimer').value
+            };
+            localStorage.setItem('luckySattaContact', JSON.stringify(data));
+            showSuccess('✅ Contact saved!');
+        }
+    </script>
+</body>
+</html>
